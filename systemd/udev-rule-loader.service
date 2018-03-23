@@ -1,0 +1,13 @@
+[Unit]
+Description=reloads udev rules as soon as the filesystem is availiable
+Before=foxtempd.service
+RequiresMountsFor=/etc/udev/rules.d/
+
+[Service]
+Type=oneshot
+User=root
+ExecStartPre=/bin/udevadm control --reload-rules
+ExecStart=/bin/udevadm trigger
+
+[Install]
+WantedBy=multi-user.target

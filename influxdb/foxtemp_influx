@@ -1,0 +1,34 @@
+#!/bin/zsh
+
+if [ $(whoami) =  "root" ]; then
+    sudo -u foxtempd /usr/local/bin/foxtemp_influx $@
+    exit $?
+fi
+
+# exit if database if offline
+#systemctl is-active influxdb > /dev/null || exit 1
+
+DB=foxtemp
+USER=foxtemp
+PW=
+TARGETHOST=the_host_the_influxdb_is_running_on
+HOST=the_host_this_script_is_running_on
+PORT=influxdb_http_port
+TIME=$(date +%s)
+COL_NAME="temperatur"
+PREFIX="curl -k 'https://${TARGETHOST}:${PORT}/write?db=${DB}&u=${USER}&p=${PW}&precision=s' --data-binary "
+
+NAME=$1
+val=$2
+
+if [[ $NAME == "" ]]; then
+    echo "No name to tag db entry with"
+    echo "Ussage: foxtemp_influx <ident_of_sensor> <temperatur>\n    ident_of_sensor z.B. serveraum1, bitte nicht 046526346 oder so"
+    exit 1;
+fi
+if [[ $val == "" ]]; then
+    echo "No value to write to db"
+    exit 1;
+fi
+CMD="${PREFIX} '${COL_NAME},host=${HOST},name=${NAME} value=${val} ${TIME}'"
+eval ${CMD}

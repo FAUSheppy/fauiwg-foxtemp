@@ -1,0 +1,59 @@
+$Id: README,v 1.4 2013-07-22 05:32:17 simimeie Exp $
+
+Intro
+======
+
+This project contains schematics and firmware for a little
+board with an Atmel AVR ATtiny85 microcontroller that
+allows you to connect Dallas/Maxim DS18b20 temperature
+probes to an USB port on your computer.
+
+Some linux software to read the data from the USB device is also included.
+
+Licence for my own source code is GPL,
+Licence for the included libavrusb is their Licence - see the files in the
+usbdrv directory.
+
+Features
+=========
+
+The attiny85 is very small, it only has 8 pins. All of these pins are used
+by this project.
+An external crystal is used to generate a 15 MHz clock.
+In theory, you can connect an unlimited amount of temperature probes to the
+onewire-bus, and read them. However, in reality there are a few limitations:
+- There is a maximum number of probes supported set at compiletime. You can
+  increase the define in ds1820.c, but be aware that each additional
+  probe will require memory, and you will run out of memory at some point.
+  You could use an attiny85 (that has the same pinout but more memory)
+  to increase the number of probes possible.
+- The length of the bus, and the power used by the probes. If the bus gets
+  too long, signals and power won't be delivered anymore. The same is true
+  for too many probes on the bus.
+I currently have NO idea what these limits are - I only tested 2 probes on
+a short cable so far. Feel free to send me success-reports.
+
+This project originally used an ATtiny45, which is a slightly smaller
+version of the ATtiny85 with 4 instead of 8 KB of Flash. However, it is
+no longer possible to fit the code into the smaller ATtiny45, at least not
+with more recent gcc and avr-libc versions. The last version that used to
+work was the avr-libc 1.4.7 and avr-gcc 4.2.2 (and -Os as a compiler
+switch to optimize for size) included with Ubuntu 8.04. Instead of wasting
+time getting outdated compiler/library versions to run, just use the
+attiny85 instead.
+
+How to use
+===========
+
+To make any use of this, you will need:
+
+To compile the AVR firmware: avr-gcc, avr-libc
+   use 'make all' to compile.
+To compile the linux host software: libusb, libusb-dev
+   use 'make hostsoftware' to compile.
+For flashing the AVR with avrdude, there is a 'make upload' target.
+That target is configured for a STK500 on /dev/ttyS0 - you will have to
+adapt the makefile if you use a different programmer and/or port.
+
+For hostsoftware usage information, call it with parameter --help.
+

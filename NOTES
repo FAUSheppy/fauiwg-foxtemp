@@ -1,0 +1,3 @@
+-> dont forget to adduser foxtempd
+-> the udev rules werent loaded on my pine64 because the filesystemmount took too long, thats what the other systemd unit file is for
+-> if you use https influxdb with selfsigned cert you have to -ssl -unsafeSsl

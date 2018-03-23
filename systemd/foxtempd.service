@@ -1,0 +1,13 @@
+[Unit]
+Description=Foxtemp service on 7001 and 7002
+After=network.target udev-rule-loader.service
+
+[Service]
+Type=simple
+User=foxtempd
+#Restart=always
+ExecStart=/usr/local/bin/hostsoftware_old_sensor -f -v daemon 000802903bc1:7001:%T 0008028d92f9:7002:%T
+
+[Install]
+WantedBy=multi-user.target
+

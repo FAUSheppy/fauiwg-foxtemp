@@ -1,0 +1,6 @@
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+PORT=31000
+NAME=sensor1
+
+* * * * * foxtempd foxtemp_influx $NAME $(netcat localhost $PORT 2>/dev/null | xargs)

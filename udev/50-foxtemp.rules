@@ -1,0 +1,1 @@
+SUBSYSTEM=="usb", ATTR{idVendor}=="16c0", ATTR{idProduct}=="05dc", ATTR{product}=="ds1820tousb", ATTR{manufacturer}=="www.poempelfox.de", MODE="0666"
